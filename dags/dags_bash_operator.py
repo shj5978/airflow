@@ -9,15 +9,12 @@ with DAG(
     schedule="0 0 * * *",
     start_date=pendulum.datetime(2025, 3, 1, tz="Asia/Seoul"),
     catchup=False,
-    tags=["shj5978", "test1"],
+    tags=["shj5978", "test1"]
 ) as dag:
-    
-    # [START howto_operator_bash]
     bash_t1 = BashOperator(
         task_id="bash_t1",
-        bash_command="echo whomi",
+        bash_command="echo whoami",
     )
-    # [END howto_operator_bash]
 
     bash_t2 = BashOperator(
         task_id="bash_t2",
