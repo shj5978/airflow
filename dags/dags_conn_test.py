@@ -22,7 +22,6 @@ with DAG(
         task_id="t3"
     )
 
-
     t4 = EmptyOperator(
         task_id="t4"
     )
@@ -32,11 +31,11 @@ with DAG(
     )
 
     t6 = EmptyOperator(
-        task_id="t5"
+        task_id="t6"
     )
 
     t7 = EmptyOperator(
-        task_id="t5"
+        task_id="t7"
     )
 
     t8 = EmptyOperator(
