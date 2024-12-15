@@ -4,4 +4,7 @@ def get_sftp():
 def regist(name, sex, *args):
     print('이름 : ' + name)
     print('성별 : ' + sex)
-    print('기타옵션들 : ' + args)
+    print('기타옵션들(1) : ')
+    for arg in args:
+        print(',' + arg)
+    print(f'기타옵션들(2) : {args}')
