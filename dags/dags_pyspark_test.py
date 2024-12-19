@@ -17,7 +17,7 @@ with DAG(dag_id="dags_pyspark_test",
     # Preprocessing task
     preprocess = SparkSubmitOperator(
         task_id="preprocess",
-        application="/opt/airflow/pyspark/preprocessing.py",  # PySpark script 경로
+        application="/opt/airflow/pyspark/preprocess.py",  # PySpark script 경로
         conn_id="spark_local",  # Spark 연결 ID
         name="preprocess_task",
         conf={"spark.master": "local[*]"}  # Spark master 설정
