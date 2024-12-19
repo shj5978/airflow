@@ -23,13 +23,6 @@ with DAG(dag_id="dags_pyspark_test",
         conf={"spark.master": "local[*]"}  # Spark master 설정
     )
 
-    # analytics
-    analytics = SparkSubmitOperator(
-        application = "/opt/airflow/pyspark/analytics.py",
-        task_id = "analytics",
-        conn_id = "spark_local"
-    )
-
     # Analytics task
     analytics = SparkSubmitOperator(
         task_id="analytics",
