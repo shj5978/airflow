@@ -1,12 +1,7 @@
 from datetime import datetime
-from email.mime import application
 from airflow import DAG
 # from airflow.providers.apache.spark.operators.spark_sql import SparkSqlOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-
-
-
-from datetime import datetime
 
 default_args = {
     'start_date' : datetime(2022,9,16)
@@ -18,12 +13,14 @@ with DAG(dag_id="dags_pyspark_test",
          default_args=default_args,
          tags=['spark'],
          catchup=False) as dag :
-    
-    # preprocess
+
+    # Preprocessing task
     preprocess = SparkSubmitOperator(
-        application = "/opt/airflow/pyspark/preprocessing.py",
-        task_id = "preprocess",
-        conn_id = "spark_local"
+        task_id="preprocess",
+        application="/opt/airflow/pyspark/preprocessing.py",  # PySpark script 경로
+        conn_id="spark_local",  # Spark 연결 ID
+        name="preprocess_task",
+        conf={"spark.master": "local[*]"}  # Spark master 설정
     )
 
     # analytics
@@ -31,6 +28,15 @@ with DAG(dag_id="dags_pyspark_test",
         application = "/opt/airflow/pyspark/analytics.py",
         task_id = "analytics",
         conn_id = "spark_local"
+    )
+
+    # Analytics task
+    analytics = SparkSubmitOperator(
+        task_id="analytics",
+        application="/opt/airflow/pyspark/analytics.py",  # PySpark script 경로
+        conn_id="spark_local",  # Spark 연결 ID
+        name="analytics_task",
+        conf={"spark.master": "local[*]"}  # Spark master 설정
     )
 
     preprocess >> analytics
