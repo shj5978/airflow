@@ -29,7 +29,8 @@ with DAG(dag_id="dags_pyspark_test",
         application="/opt/airflow/pyspark/analytics.py",  # PySpark script 경로
         conn_id="spark_local",  # Spark 연결 ID
         name="analytics_task",
-        conf={"spark.master": "local[*]"}  # Spark master 설정
+        conf={"spark.master": "local[*]"},  # Spark master 설정
+        env={"MPLCONFIGDIR": "/opt/airflow/.matplotlib_cache"}
     )
 
     preprocess >> analytics
