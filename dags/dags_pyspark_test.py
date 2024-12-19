@@ -30,7 +30,7 @@ with DAG(dag_id="dags_pyspark_test",
         conn_id="spark_local",  # Spark 연결 ID
         name="analytics_task",
         conf={"spark.master": "local[*]"},  # Spark master 설정
-        env={"MPLCONFIGDIR": "/opt/airflow/.matplotlib_cache"}
+        extra={"MPLCONFIGDIR": "/opt/airflow/.matplotlib_cache"}  # 환경 변수 설정
     )
 
     preprocess >> analytics
