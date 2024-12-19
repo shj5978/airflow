@@ -20,7 +20,8 @@ with DAG(dag_id="dags_pyspark_test",
         application="/opt/airflow/pyspark/preprocessing.py",  # PySpark script 경로
         conn_id="spark_local",  # Spark 연결 ID
         name="preprocess_task",
-        conf={"spark.master": "local[*]"}  # Spark master 설정
+        master="local[*]",  # Spark master 설정
+        conf={}  # 추가 Spark 설정이 필요한 경우 사용
     )
 
     # Analytics task
@@ -29,7 +30,8 @@ with DAG(dag_id="dags_pyspark_test",
         application="/opt/airflow/pyspark/analytics.py",  # PySpark script 경로
         conn_id="spark_local",  # Spark 연결 ID
         name="analytics_task",
-        conf={"spark.master": "local[*]"}  # Spark master 설정
+        master="local[*]",  # Spark master 설정
+        conf={}  # 추가 Spark 설정이 필요한 경우 사용
     )
 
     preprocess >> analytics
