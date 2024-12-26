@@ -18,7 +18,7 @@ print("Spark 세션 생성 완료")
     
 # S3 버킷에서 NOAA 데이터 경로
 print("S3 버킷에서 NOAA 데이터 경로 설정")
-s3_path = "s3a://noaa-ghcn-pds/csv.gz/"
+s3_path = "s3a://noaa-ghcn-pds/csv.gz/2024.csv.gz"
 
 # CSV 데이터 로드
 print("CSV 데이터 로드 시작")
