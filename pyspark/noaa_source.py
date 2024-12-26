@@ -11,7 +11,7 @@ spark = SparkSession.builder \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.hadoop.fs.s3a.path.style.access", "true") \
-    .config("spark.hadoop.fs.s3a.connection.timeout", "5000ms") \
+    .config("spark.hadoop.fs.s3a.connection.timeout", "5000") \
     .config("spark.hadoop.fs.s3a.connection.maximum", "10") \
     .config("spark.hadoop.fs.s3a.threads.max", "20") \
     .config("spark.hadoop.fs.s3a.threads.core", "10") \
