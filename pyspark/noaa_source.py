@@ -10,17 +10,10 @@ spark = SparkSession.builder \
     .config("spark.driver.memory", MAX_MEMORY)\
     .config("spark.hadoop.fs.s3a.access.key", "") \
     .config("spark.hadoop.fs.s3a.secret.key", "") \
+    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.AnonymousAWSCredentialsProvider") \
     .config("spark.hadoop.fs.s3a.endpoint", "s3.amazonaws.com") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
-    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
-    .config("spark.hadoop.fs.s3a.path.style.access", "true") \
-    .config("spark.hadoop.fs.s3a.connection.timeout", "5000") \
-    .config("spark.hadoop.fs.s3a.connection.maximum", "10") \
-    .config("spark.hadoop.fs.s3a.threads.max", "20") \
-    .config("spark.hadoop.fs.s3a.threads.core", "10") \
     .getOrCreate()
-    #.config("spark.hadoop.fs.s3a.access.key", "<YOUR_ACCESS_KEY>") \  # 공개데이터의 경우 access key 와 secret key 필요 없음
-    #.config("spark.hadoop.fs.s3a.secret.key", "<YOUR_SECRET_KEY>") \
 print("Spark 세션 생성 완료")
     
 # S3 버킷에서 NOAA 데이터 경로
