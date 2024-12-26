@@ -10,7 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-MAX_MEMORY="10g"
+MAX_MEMORY="16g"
 
 print("SparkSession 생성 중...")
 spark = SparkSession.builder.appName("taxi-fare-prediciton")\
@@ -33,7 +33,7 @@ print("TempView 생성 완료.")
 
 # 1. trip_miles 와 driver_pay 간의 산포도 그래프
 print("SQL 쿼리 실행 중...")
-miles_pay = spark.sql("SELECT trip_miles, driver_pay FROM trips").toPandas()
+miles_pay = spark.sql("SELECT trip_miles, driver_pay FROM trips LIMIT 100000").toPandas()
 print(f"SQL 쿼리 완료. 결과 데이터프레임 크기: {miles_pay.shape}")
 
 print("산포도 그래프 생성 중...")
