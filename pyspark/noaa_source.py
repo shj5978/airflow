@@ -10,6 +10,7 @@ spark = SparkSession.builder \
     .config("spark.driver.memory", MAX_MEMORY)\
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
+    .config("spark.hadoop.fs.s3a.path.style.access", "true") \
     .getOrCreate()
     #.config("spark.hadoop.fs.s3a.access.key", "<YOUR_ACCESS_KEY>") \  # 공개데이터의 경우 access key 와 secret key 필요 없음
     #.config("spark.hadoop.fs.s3a.secret.key", "<YOUR_SECRET_KEY>") \
