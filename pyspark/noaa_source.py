@@ -11,6 +11,10 @@ spark = SparkSession.builder \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.hadoop.fs.s3a.path.style.access", "true") \
+    .config("spark.hadoop.fs.s3a.connection.timeout", "5000ms") \
+    .config("spark.hadoop.fs.s3a.connection.maximum", "10") \
+    .config("spark.hadoop.fs.s3a.threads.max", "20") \
+    .config("spark.hadoop.fs.s3a.threads.core", "10") \
     .getOrCreate()
     #.config("spark.hadoop.fs.s3a.access.key", "<YOUR_ACCESS_KEY>") \  # 공개데이터의 경우 access key 와 secret key 필요 없음
     #.config("spark.hadoop.fs.s3a.secret.key", "<YOUR_SECRET_KEY>") \
