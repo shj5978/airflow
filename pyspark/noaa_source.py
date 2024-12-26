@@ -8,6 +8,8 @@ spark = SparkSession.builder \
     .appName("NOAA Weather Data") \
     .config("spark.executor.memory", MAX_MEMORY)\
     .config("spark.driver.memory", MAX_MEMORY)\
+    .config("spark.hadoop.fs.s3a.access.key", "") \
+    .config("spark.hadoop.fs.s3a.secret.key", "") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.hadoop.fs.s3a.path.style.access", "true") \
