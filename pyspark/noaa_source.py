@@ -15,6 +15,12 @@ spark = SparkSession.builder \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .getOrCreate()
 print("Spark 세션 생성 완료")
+
+# 경로 내 파일 목록 확인
+print("S3 경로 내 파일 목록 확인")
+s3_list_path = "s3a://noaa-ghcn-pds/csv.gz/"
+df = spark.read.format("text").load(s3_list_path)
+df.show(10, truncate=False)
     
 # S3 버킷에서 NOAA 데이터 경로
 print("S3 버킷에서 NOAA 데이터 경로 설정")
