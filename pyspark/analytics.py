@@ -45,6 +45,6 @@ sns.scatterplot(
     data = miles_pay
 )
 
-output_path = "/miles_pay.png"
+output_path = "./miles_pay.png"
 plt.savefig(output_path)
 print(f"산포도 그래프 저장 완료: {output_path}")
