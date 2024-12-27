@@ -33,7 +33,7 @@ print("TempView 생성 완료.")
 
 # 1. date 와 value 간의 산포도 그래프
 print("SQL 쿼리 실행 중...")
-weather_info = spark.sql("SELECT date, value FROM weather WHERE value > 0").toPandas()
+weather_info = spark.sql("SELECT CAST(date AS STRING), value FROM weather WHERE value > 0").toPandas()
 print(f"SQL 쿼리 완료. 결과 데이터프레임 크기: {weather_info.shape}")
 
 print("산포도 그래프 생성 중...")
