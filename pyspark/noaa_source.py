@@ -22,7 +22,13 @@ s3_file_path = "s3a://noaa-ghcn-pds/csv.gz/by_station/ASN00005095.csv.gz"
 
 # CSV 데이터 로드
 print("CSV 데이터 로드 시작")
-weather_df = spark.read.option("header", "true").option("inferSchema", "true").csv(s3_file_path)
+weather_df = spark.read.csv(
+    path=s3_file_path,
+    header=True,           # 헤더가 있는 파일임을 명시
+    inferSchema=True,      # 데이터 타입을 자동으로 추론
+    sep=",",               # 데이터 구분자 설정
+    multiLine=False        # 멀티라인 데이터 처리 여부 (단일 라인 데이터일 경우 False)
+)
 print("CSV 데이터 로드 완료")
 
 # 출력: 데이터 프레임 스키마 확인
@@ -36,7 +42,7 @@ weather_df.printSchema()
 #print("데이터 필터링 완료")
 
 # 데이터 저장 (Parquet 형식)
-output_path = "/opt/airflow/pyspark_data/noaa_source/noaa_weather.parquet"
+output_path = "/opt/airflow/pyspark_data/noaa_source/"
 weather_df.write.parquet(output_path, mode="overwrite")
 
 # 저장 확인
