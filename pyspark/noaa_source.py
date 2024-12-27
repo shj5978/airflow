@@ -18,7 +18,7 @@ print("Spark 세션 생성 완료")
 
 # NOAA 데이터 파일 경로
 print("S3 파일 경로 설정")
-s3_file_path = "s3a://noaa-ghcn-pds/csv.gz/by_station/ASN00005095.csv.gz"
+s3_file_path = "s3a://noaa-ghcn-pds/csv.gz/by_station/ASN0000509*.csv.gz"
 
 # CSV 데이터 로드
 print("CSV 데이터 로드 시작")
