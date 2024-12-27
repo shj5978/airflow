@@ -33,7 +33,7 @@ weather_df = spark.read.csv(
 print("CSV 데이터 로드 완료")
 
 # 컬럼 이름 설정
-weather_df = weather_df.toDF("STATION", "DATE", "ELEMENT", "VALUE", "MFLAG", "QFLAG", "SFLAG")
+weather_df = weather_df.toDF("STATION", "DATE", "ELEMENT", "VALUE", "MFLAG", "QFLAG", "SFLAG", "ETC")
 
 # 출력: 데이터 프레임 스키마 확인
 print("데이터 컬럼 정보:")
