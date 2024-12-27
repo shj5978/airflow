@@ -33,14 +33,29 @@ print("TempView 생성 완료.")
 #################################################################################################
 
 ########################    Postgres DB 에 저장   ################################################
-data_df.write \
-    .format("jdbc") \
-    .option("url", "jdbc:postgresql://localhost:5432/WPTest") \
-    .option("dbtable", "tb_noaa_weather_info") \
-    .option("user", "postgres") \
-    .option("password", "59aufcl78!") \
-    .option("driver", "org.postgresql.Driver") \
-    .mode("append") \
-    .save()
+
+### sqlalchemy 이용 방법
+# PostgreSQL 연결 설정
+engine = create_engine(f'postgresql://postgres:59aufcl78!@localhost:5432/WPTest')
+
+# Spark DataFrame을 Pandas DataFrame으로 변환
+pandas_df = data_df.toPandas()
+
+# DataFrame을 PostgreSQL 테이블에 저장
+pandas_df.to_sql('tb_noaa_weather_info', engine, if_exists='append', index=False)
 print("PostgreSQL 테이블에 데이터 저장 완료!")
+
+
+### JDBC 를 이용한 방법 ( Pandas 를 거치면 느려지기 때문에 직접 JDBC 를 호출해서 넣는것이 효율적 --> 드라이버 설치필요 )
+# data_df.write \
+#     .format("jdbc") \
+#     .option("url", "jdbc:postgresql://localhost:5432/WPTest") \
+#     .option("dbtable", "tb_noaa_weather_info") \
+#     .option("user", "postgres") \
+#     .option("password", "59aufcl78!") \
+#     .option("driver", "org.postgresql.Driver") \
+#     .mode("append") \
+#     .save()
+# print("PostgreSQL 테이블에 데이터 저장 완료!")
+
 #################################################################################################
