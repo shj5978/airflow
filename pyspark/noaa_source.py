@@ -46,7 +46,7 @@ weather_df.show(10, truncate=False)
 
 # 2024년 1월 1일 데이터 필터링
 #print("데이터 필터링 시작")
-#filtered_df = weather_df.filter(weather_df.DATE == "2024-01-01")
+#filtered_df = weather_df.filter(weather_df.DATE == "17500301")
 #print("데이터 필터링 완료")
 
 # 데이터 저장 (Parquet 형식)

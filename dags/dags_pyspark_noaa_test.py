@@ -15,7 +15,7 @@ with DAG(dag_id="dags_pyspark_noaa_test",
 
     # Preprocessing task
     make_source = SparkSubmitOperator(
-        task_id="make_source",
+        task_id="make_source_task",
         application="/opt/airflow/pyspark/noaa_source.py",  # PySpark script 경로
         conn_id="spark_local",  # Spark 연결 ID
         name="make_source_task",
@@ -28,4 +28,16 @@ with DAG(dag_id="dags_pyspark_noaa_test",
         }
     )
 
-    make_source
+    # Analytics task
+    analytics = SparkSubmitOperator(
+        task_id="analytics",
+        application="/opt/airflow/pyspark/noaa_result.py",  # PySpark script 경로
+        conn_id="spark_local",  # Spark 연결 ID
+        name="analytics_task",
+        conf={
+            "spark.master": "local[*]",
+            "spark.executorEnv.MPLCONFIGDIR": "/opt/airflow/.matplotlib_cache"
+        }  # 환경 설정
+    )
+
+    make_source >> analytics
