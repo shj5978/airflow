@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib.ticker as ticker
 
 MAX_MEMORY="16g"
 
@@ -42,8 +43,12 @@ plt.title('weather_info', fontsize = 30)
 sns.scatterplot(
     x = 'date',
     y = 'value',
-    data = weather_info
+    data = weather_info,
+    ax=ax
 )
+
+# x축 라벨 간격 조정
+ax.xaxis.set_major_locator(ticker.MaxNLocator(nbins=10))  # x축 라벨을 최대 10개로 제한
 
 output_path = "./pyspark_data/noaa_result/weather_info.png"
 plt.savefig(output_path)
