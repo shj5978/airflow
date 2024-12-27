@@ -36,8 +36,8 @@ weather_df.printSchema()
 #print("데이터 필터링 완료")
 
 # 데이터 저장 (Parquet 형식)
-#output_path = "/opt/airflow/pyspark_data/noaa_source/noaa_weather_2024-01-01.parquet"
-#filtered_df.write.parquet(output_path, mode="overwrite")
+output_path = "/opt/airflow/pyspark_data/noaa_source/noaa_weather.parquet"
+weather_df.write.parquet(output_path, mode="overwrite")
 
 # 저장 확인
-#print(f"데이터가 {output_path} 경로에 Parquet 형식으로 저장되었습니다.")
+print(f"데이터가 {output_path} 경로에 Parquet 형식으로 저장되었습니다.")
