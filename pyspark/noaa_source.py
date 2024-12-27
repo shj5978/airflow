@@ -24,16 +24,24 @@ s3_file_path = "s3a://noaa-ghcn-pds/csv.gz/by_station/ASN00005095.csv.gz"
 print("CSV 데이터 로드 시작")
 weather_df = spark.read.csv(
     path=s3_file_path,
-    header=True,           # 헤더가 있는 파일임을 명시
-    inferSchema=True,      # 데이터 타입을 자동으로 추론
-    sep=",",               # 데이터 구분자 설정
-    multiLine=False        # 멀티라인 데이터 처리 여부 (단일 라인 데이터일 경우 False)
+    header=False,           # 헤더가 없는 파일임
+    inferSchema=True,       # 데이터 타입 자동 추론
+    sep=",",                # 쉼표로 데이터 구분
+    ignoreLeadingWhiteSpace=True,
+    ignoreTrailingWhiteSpace=True
 )
 print("CSV 데이터 로드 완료")
+
+# 컬럼 이름 설정
+weather_df = weather_df.toDF("STATION", "DATE", "ELEMENT", "VALUE", "MFLAG", "QFLAG", "SFLAG")
 
 # 출력: 데이터 프레임 스키마 확인
 print("데이터 컬럼 정보:")
 weather_df.printSchema()
+
+# 데이터 예시 출력
+print("데이터 예시:")
+weather_df.show(10, truncate=False)
     
 
 # 2024년 1월 1일 데이터 필터링
