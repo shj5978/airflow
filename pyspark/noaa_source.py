@@ -42,7 +42,9 @@ weather_df.printSchema()
 # 데이터 예시 출력
 print("데이터 예시:")
 weather_df.show(10, truncate=False)
-    
+
+# 파티션 수 조정
+weather_df = weather_df.repartition(10)  # 병렬 작업을 위한 파티션 수 설정    
 
 # 2024년 1월 1일 데이터 필터링
 #print("데이터 필터링 시작")
