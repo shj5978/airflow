@@ -36,7 +36,7 @@ print("TempView 생성 완료.")
 
 ### sqlalchemy 이용 방법
 # PostgreSQL 연결 설정
-engine = create_engine('postgresql://postgres:59aufcl78!@localhost:5432/postgres')
+engine = create_engine('postgresql://postgres:59aufcl78!@172.23.208.1:5432/postgres')
 
 # Spark DataFrame을 Pandas DataFrame으로 변환
 pandas_df = data_df.toPandas()
