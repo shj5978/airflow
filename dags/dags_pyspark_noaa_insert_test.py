@@ -22,9 +22,7 @@ with DAG(dag_id="dags_pyspark_noaa_insert_test",
         conf={
             "spark.master": "local[*]",
             "spark.executorEnv.MPLCONFIGDIR": "/opt/airflow/.matplotlib_cache",
-            "spark.jars": "/opt/airflow/pyspark/jar/postgresql-42.6.0.jar",
-            "spark.driver.extraClassPath": "/opt/airflow/pyspark/jar/postgresql-42.6.0.jar",
-            "spark.executor.extraClassPath": "/opt/airflow/pyspark/jar/postgresql-42.6.0.jar"
+            "spark.jars": "/opt/airflow/pyspark/jar/postgresql-42.6.0.jar"
         }  # 환경 설정
     )
 
