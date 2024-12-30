@@ -53,7 +53,7 @@ print(f"전체 데이터 수 : {data_df.count()}")  # 전체 row 수 확인
 data_df.coalesce(1).write \
     .format("jdbc") \
     .option("url", "jdbc:postgresql://172.23.208.1:5432/postgres") \
-    .option("dbtable", "tb_noaa_weather_info") \
+    .option("dbtable", "temp_tb_noaa_weather_info") \
     .option("user", "postgres") \
     .option("password", "59aufcl78!") \
     .option("driver", "org.postgresql.Driver") \
