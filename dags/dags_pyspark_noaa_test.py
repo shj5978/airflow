@@ -23,8 +23,7 @@ with DAG(dag_id="dags_pyspark_noaa_test",
         "spark.master": "local[*]",
         "spark.jars": "/opt/airflow/pyspark/jar/aws-java-sdk-bundle-1.12.497.jar,"
                       "/opt/airflow/pyspark/jar/hadoop-aws-3.3.2.jar,"
-                      "/opt/airflow/pyspark/jar/hadoop-common-3.3.2.jar,"
-                      "/opt/airflow/pyspark/jar/hadoop-auth-3.3.2.jar"
+                      "/opt/airflow/pyspark/jar/hadoop-common-3.3.2.jar"
         }
     )
 
