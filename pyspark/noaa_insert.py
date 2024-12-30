@@ -77,8 +77,17 @@ upsert_sql = """
         ETC = EXCLUDED.ETC;
 """
 
+# DELETE SQL 실행 - temp 데이터 삭제 ( 중복 처리 )
+delete_sql = """
+    DELETE FROM temp_tb_noaa_weather_info;
+"""
+
 with engine.connect() as conn:
     conn.execute(upsert_sql)
     print("UPSERT 작업 완료!")
+    conn.execute(delete_sql)
+    print("삭제 완료!")
+
+
 
 #################################################################################################
