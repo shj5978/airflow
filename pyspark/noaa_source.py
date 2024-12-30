@@ -6,8 +6,10 @@ MAX_MEMORY="16g"
 print("Spark 세션 생성 시작(15)")
 spark = SparkSession.builder \
     .appName("NOAA Weather Data") \
-    .config("spark.executor.memory", MAX_MEMORY)\
-    .config("spark.driver.memory", MAX_MEMORY)\
+    .config("spark.executor.memory", MAX_MEMORY) \
+    .config("spark.driver.memory", MAX_MEMORY) \
+    .config("spark.hadoop.fs.s3a.threads.max", "50") \
+    .config("spark.hadoop.fs.s3a.connection.maximum", "50") \
     .config("spark.hadoop.fs.s3a.access.key", "") \
     .config("spark.hadoop.fs.s3a.secret.key", "") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.AnonymousAWSCredentialsProvider") \
@@ -26,9 +28,7 @@ weather_df = spark.read.csv(
     path=s3_file_path,
     header=False,           # 헤더가 없는 파일임
     inferSchema=True,       # 데이터 타입 자동 추론
-    sep=",",                # 쉼표로 데이터 구분
-    ignoreLeadingWhiteSpace=True,
-    ignoreTrailingWhiteSpace=True
+    sep=","                # 쉼표로 데이터 구분
 )
 print("CSV 데이터 로드 완료")
 
