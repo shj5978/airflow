@@ -49,7 +49,7 @@ print(data_df.count())  # 전체 row 수 확인
 
 
 ### JDBC 를 이용한 방법 ( Pandas 를 거치면 느려지기 때문에 직접 JDBC 를 호출해서 넣는것이 효율적 --> 드라이버 설치필요 )
-data_df.write \
+data_df.coalesce(1).write \
     .format("jdbc") \
     .option("url", "jdbc:postgresql://172.23.208.1:5432/postgres") \
     .option("dbtable", "tb_noaa_weather_info") \
