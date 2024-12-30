@@ -31,12 +31,12 @@ print("TempView 생성 중...")
 data_df.createOrReplaceTempView("weather")
 print("TempView 생성 완료.")
 
-print(data_df.count())  # 전체 row 수 확인
+print(f"전체 데이터 수 : {data_df.count()}")  # 전체 row 수 확인
 #################################################################################################
 
 ########################    Postgres DB 에 저장   ################################################
 
-### sqlalchemy 이용 방법
+### (1) sqlalchemy 이용 방법
 # PostgreSQL 연결 설정
 # engine = create_engine('postgresql://postgres:59aufcl78!@172.23.208.1:5432/postgres')
 
@@ -48,7 +48,8 @@ print(data_df.count())  # 전체 row 수 확인
 # print("PostgreSQL 테이블에 데이터 저장 완료!")
 
 
-### JDBC 를 이용한 방법 ( Pandas 를 거치면 느려지기 때문에 직접 JDBC 를 호출해서 넣는것이 효율적 --> 드라이버 설치필요 )
+### (2) JDBC 를 이용한 방법 ( Pandas 를 거치면 느려지기 때문에 직접 JDBC 를 호출해서 넣는것이 효율적 --> 드라이버 jar 설치필요 )
+# 단, JDBC 를 이용한 방법은 Insert 만 가능하기 때문에 중복처리는 따로 해줘야 함
 data_df.coalesce(1).write \
     .format("jdbc") \
     .option("url", "jdbc:postgresql://172.23.208.1:5432/postgres") \
@@ -59,5 +60,25 @@ data_df.coalesce(1).write \
     .mode("append") \
     .save()
 print("PostgreSQL 테이블에 데이터 저장 완료!")
+
+# PostgreSQL에서 UPSERT 실행 ( 중복 처리 )
+engine = create_engine('postgresql://postgres:59aufcl78!@172.23.208.1:5432/postgres')
+
+# UPSERT SQL 실행 ( 중복 처리 )
+upsert_sql = """
+    INSERT INTO tb_noaa_weather_info (STATION, DATE, ELEMENT, VALUE, MFLAG, QFLAG, SFLAG, ETC)
+    SELECT STATION, DATE, ELEMENT, VALUE, MFLAG, QFLAG, SFLAG, ETC
+    FROM temp_tb_noaa_weather_info
+    ON CONFLICT (STATION, DATE, ELEMENT, VALUE) 
+    DO UPDATE SET 
+        MFLAG = EXCLUDED.MFLAG,
+        QFLAG = EXCLUDED.QFLAG,
+        SFLAG = EXCLUDED.SFLAG,
+        ETC = EXCLUDED.ETC;
+"""
+
+with engine.connect() as conn:
+    conn.execute(upsert_sql)
+    print("UPSERT 작업 완료!")
 
 #################################################################################################
