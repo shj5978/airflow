@@ -21,7 +21,8 @@ with DAG(dag_id="dags_pyspark_noaa_insert_test",
         name="insert_task",
         conf={
             "spark.master": "local[*]",
-            "spark.executorEnv.MPLCONFIGDIR": "/opt/airflow/.matplotlib_cache"
+            "spark.executorEnv.MPLCONFIGDIR": "/opt/airflow/.matplotlib_cache",
+            "spark.jars": "/opt/airflow/pyspark/jar/postgresql-42.6.0.jar"
         }  # 환경 설정
     )
 
