@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from minio import Minno
+from minio import Minio
 
 MAX_MEMORY="16g"
 
