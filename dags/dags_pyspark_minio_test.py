@@ -1,8 +1,10 @@
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from datetime import datetime
 
 with DAG(dag_id="dags_pyspark_minio_test",
          tags=['spark'],
+         start_date=datetime(2025, 1, 16),
          catchup=False) as dag :
 
     # Preprocessing task
