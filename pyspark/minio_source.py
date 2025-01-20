@@ -32,7 +32,7 @@ print("CSV 데이터 로드 완료")
 
 # MinIO 클라이언트 생성
 minio_client = Minio(
-    "localhost:9000",  # MinIO 서버 주소
+    "minio:9000",  # MinIO 서버 주소
     "NvqZkPJZsKTiPVFQczZo",  # MinIO 접근 키
     "2N52qmlnEJ7zaj8pC8sGlhM1f2ZnKcfowlz1dvOZ",  # MinIO 비밀 키
     secure=False  # HTTPS가 아닌 HTTP로 연결할 경우 False로 설정
