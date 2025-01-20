@@ -20,17 +20,9 @@ spark = SparkSession.builder \
     .getOrCreate()
 print("Spark 세션 생성 완료")
 
-# MinIO 호스트를 IP로 강제 변환
-try:
-    minio_ip = socket.gethostbyname("minio")  # MinIO의 컨테이너 이름을 IP로 변환
-    print(f"Resolved MinIO hostname 'minio' to IP: {minio_ip}")
-except socket.gaierror as e:
-    print(f"Failed to resolve 'minio': {e}")
-    raise
-
 # MinIO 클라이언트 생성
 minio_client = Minio(
-    f"{minio_ip}:9000",  # MinIO 서버 IP 주소
+    "172.21.0.2:9000",  # MinIO 서버 IP 주소
     access_key="NvqZkPJZsKTiPVFQczZo",  # MinIO 접근 키
     secret_key="2N52qmlnEJ7zaj8pC8sGlhM1f2ZnKcfowlz1dvOZ",  # MinIO 비밀 키
     secure=False  # HTTPS가 아닌 HTTP로 연결할 경우 False로 설정
