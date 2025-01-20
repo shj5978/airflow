@@ -32,11 +32,12 @@ print("CSV 데이터 로드 완료")
 
 # MinIO 클라이언트 생성
 minio_client = Minio(
-    "host.docker.internal:9000",  # MinIO 서버 주소
+    "localhost:9000",  # MinIO 서버 주소
     "NvqZkPJZsKTiPVFQczZo",  # MinIO 접근 키
     "2N52qmlnEJ7zaj8pC8sGlhM1f2ZnKcfowlz1dvOZ",  # MinIO 비밀 키
     secure=False  # HTTPS가 아닌 HTTP로 연결할 경우 False로 설정
 )
+print("MinIO 클라이언트 생성 완료")
 
 try:
     # 컬럼 이름 추가
@@ -47,6 +48,7 @@ try:
     pandas_df = minio_df.toPandas()  # Spark DataFrame을 Pandas DataFrame으로 변환
     pandas_df.to_csv(csv_buffer, index=False)  # CSV로 변환하여 BytesIO에 저장
     csv_buffer.seek(0)  # 파일 포인터를 처음으로 이동
+    print("DataFrame 을 메모리에 csv 로 저장 완료")
 
     # MinIO에 파일 업로드
     minio_client.put_object(
