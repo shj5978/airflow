@@ -25,8 +25,8 @@ logger.info("Spark 세션 생성 완료")
 s3_file_path = "s3a://noaa-ghcn-pds/csv.gz/by_station/ASN0000509*.csv.gz"
 
 minio_endpoint = "localhost:9000"
-minio_access_key = "NvqZkPJZsKTiPVFQczZo"
-minio_secret_key = "2N52qmlnEJ7zaj8pC8sGlhM1f2ZnKcfowlz1dvOZ"
+minio_access_key = "oMGrfbg5iz0zgt1iMT5w"
+minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"
 minio_bucket = "s3a://vm-workplace/uploaded_data"
 
 # MinIO 연결 설정
