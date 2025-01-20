@@ -38,7 +38,7 @@ spark.conf.set("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
 
 try:
     logger.info("S3에서 데이터 읽기 시작")
-    df = spark.read.csv(s3_file_path, header=False, inferSchema=True, compression="gzip")
+    df = spark.read.csv(s3_file_path, header=False, inferSchema=True)  # compression 제거
     logger.info("S3에서 데이터 읽기 완료")
 
     logger.info("MinIO에 데이터 저장 시작")
