@@ -12,6 +12,7 @@ spark = SparkSession.builder \
     .config("spark.hadoop.fs.s3a.access.key", "") \
     .config("spark.hadoop.fs.s3a.secret.key", "") \
     .config("spark.hadoop.fs.s3a.endpoint", "s3.amazonaws.com") \
+    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.AnonymousAWSCredentialsProvider") \
     .config("spark.hadoop.fs.s3a.path.style.access", "true") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .getOrCreate()
