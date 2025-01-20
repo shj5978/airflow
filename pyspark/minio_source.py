@@ -9,8 +9,8 @@ spark = SparkSession.builder \
     .config("spark.driver.memory", MAX_MEMORY) \
     .config("spark.hadoop.fs.s3a.threads.max", "50") \
     .config("spark.hadoop.fs.s3a.connection.maximum", "50") \
-    .config("spark.hadoop.fs.s3a.access.key", "<YOUR_S3_ACCESS_KEY>") \
-    .config("spark.hadoop.fs.s3a.secret.key", "<YOUR_S3_SECRET_KEY>") \
+    .config("spark.hadoop.fs.s3a.access.key", "") \
+    .config("spark.hadoop.fs.s3a.secret.key", "") \
     .config("spark.hadoop.fs.s3a.endpoint", "s3.amazonaws.com") \
     .config("spark.hadoop.fs.s3a.path.style.access", "true") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
