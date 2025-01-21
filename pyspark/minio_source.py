@@ -14,12 +14,12 @@ minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"  # MinIO 비밀 �
 minio_bucket_name = "vm-workplace"  # MinIO 버킷 이름
 minio_target_folder = "uploaded_data/"  # MinIO 폴더 경로
 
-# AWS S3 클라이언트 설정 (공용 버킷이라 비어있음)
+# AWS S3 클라이언트 설정 (공용이라 비어있음)
 s3_client = boto3.client(
     "s3",
     aws_access_key_id=aws_s3_access_key,
     aws_secret_access_key=aws_s3_secret_key,
-    config=boto3.session.Config(signature_version='unsigned'),
+    config=boto3.session.Config(signature_version='v4'),  # 기본 서명 방식으로 설정
     endpoint_url="https://s3.amazonaws.com"  # AWS 공식 엔드포인트
 )
 print("AWS S3 클라이언트 설정 완료.")
