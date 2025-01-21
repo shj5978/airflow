@@ -48,13 +48,17 @@ try:
             "Bucket": aws_s3_bucket_name,
             "Prefix": aws_s3_folder,
         }
+
+        print("여기까지는 OK(1)")
         
         if continuation_token:
             list_params["ContinuationToken"] = continuation_token
+
+        print("여기까지는 OK(2)")
         
         s3_objects = s3_client.list_objects_v2(**list_params)
 
-        print("여기까지는 OK")
+        print("여기까지는 OK(3)")
 
         for obj in s3_objects.get("Contents", []):
             file_key = obj["Key"]
