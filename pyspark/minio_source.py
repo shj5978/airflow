@@ -14,9 +14,11 @@ minio_target_folder = "uploaded_data/"  # MinIO 폴더 경로
 
 # AWS S3 클라이언트 설정 (액세스 키와 비밀 키 없이 접근)
 s3_client = boto3.client(
-    "s3",
-    config=boto3.session.Config(signature_version='v4'),  # 기본 서명 방식
-    endpoint_url="https://s3.amazonaws.com"  # AWS 공식 엔드포인트
+    's3',
+    aws_access_key_id=None,  # 자격 증명 없이 설정
+    aws_secret_access_key=None,  # 자격 증명 없이 설정
+    config=boto3.session.Config(signature_version='v4'),
+    endpoint_url="s3.amazonaws.com"
 )
 print("AWS S3 클라이언트 설정 완료.")
 
