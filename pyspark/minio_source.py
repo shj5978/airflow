@@ -1,24 +1,32 @@
 import boto3
+from botocore.exceptions import NoCredentialsError
 
-# S3 클라이언트 생성 (Anonymous access 사용)
-s3_client = boto3.client('s3', endpoint_url="https://s3.amazonaws.com")
+# 익명 접근 설정
+s3_client = boto3.client(
+    's3',
+    endpoint_url="https://s3.amazonaws.com",
+    aws_access_key_id='',
+    aws_secret_access_key='',
+)
 print("client 생성 완료")
 
-# 버킷과 파일 경로 설정
+# S3 클라이언트로 객체 리스트 가져오기
 bucket_name = "noaa-ghcn-pds"
 prefix = "csv.gz/by_station/ASN0000509"
 
-# 버킷에서 파일 목록 가져오기
-response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
-print("파일 목록 Read 완료")
-
-# 파일 목록 출력
-if 'Contents' in response:
-    print("파일 목록:")
-    for obj in response['Contents']:
-        print(obj['Key'])
-else:
-    print("파일이 존재하지 않습니다.")
+try:
+    response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
+    print("파일 목록 Read 완료")
+    if 'Contents' in response:
+        print("파일 목록:")
+        for obj in response['Contents']:
+            print(obj['Key'])
+    else:
+        print("파일이 존재하지 않습니다.")
+except NoCredentialsError:
+    print("자격 증명 오류: 자격 증명이 필요합니다.")
+except Exception as e:
+    print(f"오류 발생: {e}")
 
 # from minio import Minio
 # import boto3
