@@ -62,13 +62,18 @@ try:
 
         for obj in s3_objects.get("Contents", []):
             file_key = obj["Key"]
+            print("여기까지는 OK(4)")
             if file_key.endswith("/"):  # 폴더는 스킵
                 continue
+            
+            print("여기까지는 OK(5)")
 
             # 파일 패턴 매칭 (ASN0000509*.csv.gz) 필터링
             if fnmatch.fnmatch(file_key, "csv.gz/by_station/ASN0000509*.csv.gz"):
                 # S3 객체 URL 생성
                 s3_object_url = f"https://{aws_s3_bucket_name}.s3.amazonaws.com/{file_key}"
+
+                print("여기까지는 OK(6)")
 
                 # MinIO로 업로드 (스트리밍 전송)
                 minio_target_path = f"{minio_target_folder}{file_key.split('/')[-1]}"
