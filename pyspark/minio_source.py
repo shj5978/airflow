@@ -1,4 +1,7 @@
 import boto3
+import botocore
+from botocore import UNSIGNED
+from botocore.client import Config
 from botocore.exceptions import NoCredentialsError
 
 # 인증되지 않은 접근을 위해 signature_version='s3v4' 사용
