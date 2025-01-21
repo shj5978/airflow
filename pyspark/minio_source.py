@@ -10,7 +10,7 @@ s3_client = boto3.client(
     endpoint_url="https://s3.amazonaws.com",  # https:// 포함
     aws_access_key_id="",
     aws_secret_access_key="",
-    config=boto3.session.Config(signature_version="UNSIGNED"),  # s3v4 서명 방식 사용
+    config=boto3.session.Config(signature_version=botocore.UNSIGNED),  # s3v4 서명 방식 사용
 )
 print("client 생성 완료")
 
