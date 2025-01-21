@@ -3,8 +3,6 @@ import boto3
 import fnmatch  # 패턴 매칭을 위한 fnmatch 모듈
 
 # AWS S3 및 MinIO 설정
-aws_s3_access_key = ""  # AWS S3 액세스 키 (공용이라 비워둡니다)
-aws_s3_secret_key = ""  # AWS S3 비밀 키 (공용이라 비워둡니다)
 aws_s3_bucket_name = "noaa-ghcn-pds"  # AWS S3 버킷 이름
 aws_s3_folder = "csv.gz/by_station/"  # AWS S3 폴더 경로 (접두어만 지정)
 
@@ -14,12 +12,10 @@ minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"  # MinIO 비밀 �
 minio_bucket_name = "vm-workplace"  # MinIO 버킷 이름
 minio_target_folder = "uploaded_data/"  # MinIO 폴더 경로
 
-# AWS S3 클라이언트 설정 (공용이라 비어있음)
+# AWS S3 클라이언트 설정 (액세스 키와 비밀 키 없이 접근)
 s3_client = boto3.client(
     "s3",
-    aws_access_key_id=aws_s3_access_key,
-    aws_secret_access_key=aws_s3_secret_key,
-    config=boto3.session.Config(signature_version='v4'),  # 기본 서명 방식으로 설정
+    config=boto3.session.Config(signature_version='v4'),  # 기본 서명 방식
     endpoint_url="https://s3.amazonaws.com"  # AWS 공식 엔드포인트
 )
 print("AWS S3 클라이언트 설정 완료.")
