@@ -3,8 +3,8 @@ import boto3
 import fnmatch  # 패턴 매칭을 위한 fnmatch 모듈
 
 # AWS S3 및 MinIO 설정
-aws_s3_access_key = ""  # AWS S3 액세스 키
-aws_s3_secret_key = ""  # AWS S3 비밀 키
+aws_s3_access_key = ""  # AWS S3 액세스 키 (공용 버킷이라 비워둠)
+aws_s3_secret_key = ""  # AWS S3 비밀 키 (공용 버킷이라 비워둠)
 aws_s3_bucket_name = "noaa-ghcn-pds"  # AWS S3 버킷 이름
 aws_s3_folder = "csv.gz/by_station/"  # AWS S3 폴더 경로 (접두어만 지정)
 
@@ -14,11 +14,12 @@ minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"  # MinIO 비밀 �
 minio_bucket_name = "vm-workplace"  # MinIO 버킷 이름
 minio_target_folder = "uploaded_data/"  # MinIO 폴더 경로
 
-# AWS S3 클라이언트 설정
+# AWS S3 클라이언트 설정 (공용 버킷이므로 no-sign-request로 설정)
 s3_client = boto3.client(
     "s3",
-    aws_access_key_id=aws_s3_access_key,
-    aws_secret_access_key=aws_s3_secret_key
+    aws_access_key_id='',  # 공용 버킷이므로 비워둡니다.
+    aws_secret_access_key='',  # 비워둡니다.
+    config=boto3.session.Config(signature_version='unsigned')  # 인증 생략
 )
 print("AWS S3 클라이언트 설정 완료.")
 
@@ -44,10 +45,10 @@ try:
             "Bucket": aws_s3_bucket_name,
             "Prefix": aws_s3_folder,
         }
-        
+
         if continuation_token:
             list_params["ContinuationToken"] = continuation_token
-        
+
         s3_objects = s3_client.list_objects_v2(**list_params)
 
         for obj in s3_objects.get("Contents", []):
