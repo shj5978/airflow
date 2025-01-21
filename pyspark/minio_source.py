@@ -1,3 +1,25 @@
+import boto3
+
+# S3 클라이언트 생성 (Anonymous access 사용)
+s3_client = boto3.client('s3', endpoint_url="https://s3.amazonaws.com")
+print("client 생성 완료")
+
+# 버킷과 파일 경로 설정
+bucket_name = "noaa-ghcn-pds"
+prefix = "csv.gz/by_station/ASN0000509"
+
+# 버킷에서 파일 목록 가져오기
+response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
+print("파일 목록 Read 완료")
+
+# 파일 목록 출력
+if 'Contents' in response:
+    print("파일 목록:")
+    for obj in response['Contents']:
+        print(obj['Key'])
+else:
+    print("파일이 존재하지 않습니다.")
+
 # from minio import Minio
 # import boto3
 # import fnmatch  # 패턴 매칭을 위한 fnmatch 모듈
@@ -79,23 +101,3 @@
 #     print(f"오류 발생: {e}")
 
 #############################
-
-import boto3
-
-# S3 클라이언트 생성 (Anonymous access 사용)
-s3_client = boto3.client('s3', endpoint_url="https://s3.amazonaws.com")
-
-# 버킷과 파일 경로 설정
-bucket_name = "noaa-ghcn-pds"
-prefix = "csv.gz/by_station/ASN0000509"
-
-# 버킷에서 파일 목록 가져오기
-response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
-
-# 파일 목록 출력
-if 'Contents' in response:
-    print("파일 목록:")
-    for obj in response['Contents']:
-        print(obj['Key'])
-else:
-    print("파일이 존재하지 않습니다.")
