@@ -1,63 +1,79 @@
-from pyspark.sql import SparkSession
-import logging
+from minio import Minio
+import boto3
+import fnmatch  # 패턴 매칭을 위한 fnmatch 모듈
 
-# 로깅 설정
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("S3-to-MinIO")
+# AWS S3 및 MinIO 설정
+aws_s3_access_key = ""  # AWS S3 액세스 키
+aws_s3_secret_key = ""  # AWS S3 비밀 키
+aws_s3_bucket_name = "noaa-ghcn-pds"  # AWS S3 버킷 이름
+aws_s3_folder = "csv.gz/by_station/"  # AWS S3 폴더 경로 (접두어만 지정)
 
-MAX_MEMORY = "16g"
-logger.info("AWS Spark 세션 생성 시작")
-aws_spark = SparkSession.builder \
-    .appName("AWS S3") \
-    .config("spark.executor.memory", MAX_MEMORY) \
-    .config("spark.driver.memory", MAX_MEMORY) \
-    .config("spark.hadoop.fs.s3a.threads.max", "50") \
-    .config("spark.hadoop.fs.s3a.connection.maximum", "50") \
-    .config("spark.hadoop.fs.s3a.access.key", "") \
-    .config("spark.hadoop.fs.s3a.secret.key", "") \
-    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.AnonymousAWSCredentialsProvider") \
-    .config("spark.hadoop.fs.s3a.endpoint", "s3.amazonaws.com") \
-    .config("spark.hadoop.fs.s3a.path.style.access", "true") \
-    .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
-    .getOrCreate()
-logger.info("AWS Spark 세션 생성 완료")
+minio_endpoint = "localhost:9000"  # MinIO 서버 URL
+minio_access_key = "oMGrfbg5iz0zgt1iMT5w"  # MinIO 액세스 키
+minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"  # MinIO 비밀 키
+minio_bucket_name = "vm-workplace"  # MinIO 버킷 이름
+minio_target_folder = "uploaded_data/"  # MinIO 폴더 경로
 
-# MinIO Spark 세션 생성
-logger.info("MinIO Spark 세션 생성 시작")
-min_spark = SparkSession.builder \
-    .appName("MinIO S3") \
-    .config("spark.hadoop.fs.s3a.endpoint", "localhost:9000") \
-    .config("spark.hadoop.fs.s3a.access.key", "oMGrfbg5iz0zgt1iMT5w") \
-    .config("spark.hadoop.fs.s3a.secret.key", "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg") \
-    .config("spark.hadoop.fs.s3a.connection.maximum", "100") \
-    .config("spark.hadoop.fs.s3a.path.style.access", "true") \
-    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider") \
-    .getOrCreate()
-logger.info("MinIO Spark 세션 생성 완료")
+# AWS S3 클라이언트 설정
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=aws_s3_access_key,
+    aws_secret_access_key=aws_s3_secret_key
+)
+print("AWS S3 클라이언트 설정 완료.")
 
-s3_file_path = "s3a://noaa-ghcn-pds/csv.gz/by_station/ASN0000509*.csv.gz"
-minio_bucket = "s3a://vm-workplace/uploaded_data"
+# MinIO 클라이언트 설정
+minio_client = Minio(
+    minio_endpoint,
+    access_key=minio_access_key,
+    secret_key=minio_secret_key,
+    secure=False  # HTTPS 사용 여부
+)
+print("MinIO 클라이언트 설정 완료.")
+
+# MinIO 버킷이 없는 경우 생성
+# if not minio_client.bucket_exists(minio_bucket_name):
+#     minio_client.make_bucket(minio_bucket_name)
 
 try:
-    logger.info("AWS S3에서 데이터 읽기 시작")
-    # aws_spark를 사용해 AWS S3에서 데이터 읽기
-    df = aws_spark.read.csv(s3_file_path, header=False, inferSchema=True)  # compression 제거
-    logger.info("AWS S3에서 데이터 읽기 완료")
+    # 페이지네이션 설정: 다음 페이지가 있는지 확인하기 위해 계속 요청
+    continuation_token = None
+    while True:
+        # S3에서 파일 목록 가져오기
+        list_params = {
+            "Bucket": aws_s3_bucket_name,
+            "Prefix": aws_s3_folder,
+        }
+        
+        if continuation_token:
+            list_params["ContinuationToken"] = continuation_token
+        
+        s3_objects = s3_client.list_objects_v2(**list_params)
 
-    # MinIO에 데이터를 저장하려면 min_spark 세션을 사용해야 합니다
-    logger.info("MinIO에 데이터 저장 시작")
-    # min_spark.write.csv로 MinIO에 데이터 저장
-    df.write \
-        .format("csv") \
-        .option("header", "true") \
-        .mode("overwrite") \
-        .save(minio_bucket)
+        for obj in s3_objects.get("Contents", []):
+            file_key = obj["Key"]
+            if file_key.endswith("/"):  # 폴더는 스킵
+                continue
 
-    logger.info(f"데이터가 MinIO에 성공적으로 업로드되었습니다: {minio_bucket}")
+            # 파일 패턴 매칭 (ASN0000509*.csv.gz) 필터링
+            if fnmatch.fnmatch(file_key, "csv.gz/by_station/ASN0000509*.csv.gz"):
+                # S3 객체 URL 생성
+                s3_object_url = f"https://{aws_s3_bucket_name}.s3.amazonaws.com/{file_key}"
+
+                # MinIO로 업로드 (스트리밍 전송)
+                minio_target_path = f"{minio_target_folder}{file_key.split('/')[-1]}"
+                minio_client.put_object(
+                    bucket_name=minio_bucket_name,
+                    object_name=minio_target_path,
+                    data=s3_client.get_object(Bucket=aws_s3_bucket_name, Key=file_key)["Body"],
+                    length=obj["Size"]
+                )
+                print(f"Uploaded {file_key} to MinIO at {minio_target_path}")
+
+        # 페이지네이션: 다음 페이지가 있으면 토큰 갱신
+        continuation_token = s3_objects.get("NextContinuationToken")
+        if not continuation_token:
+            break  # 더 이상 페이지가 없으면 종료
 
 except Exception as e:
-    logger.error(f"Error while streaming data from S3 to MinIO: {e}")
-
-finally:
-    aws_spark.stop()
-    min_spark.stop()
+    print(f"오류 발생: {e}")
