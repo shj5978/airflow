@@ -1,13 +1,13 @@
 import boto3
 from botocore.exceptions import NoCredentialsError
 
-# 익명 접근 설정
+# 인증되지 않은 접근을 위해 signature_version='s3v4' 사용
 s3_client = boto3.client(
     's3',
-    endpoint_url="https://s3.amazonaws.com",
-    aws_access_key_id='',  # 비어있는 액세스 키
-    aws_secret_access_key='',  # 비어있는 비밀 키
-    config=boto3.session.Config(signature_version='UNSIGNED'),
+    endpoint_url="https://s3.amazonaws.com",  # https:// 포함
+    aws_access_key_id='',
+    aws_secret_access_key='',
+    config=boto3.session.Config(signature_version='s3v4'),  # s3v4 서명 방식 사용
 )
 print("client 생성 완료")
 
@@ -16,6 +16,7 @@ bucket_name = "noaa-ghcn-pds"
 prefix = "csv.gz/by_station/ASN0000509"
 
 try:
+    print("파일 목록 Read 시작")
     response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
     print("파일 목록 Read 완료")
     if 'Contents' in response:
