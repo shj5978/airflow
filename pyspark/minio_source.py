@@ -54,6 +54,8 @@ try:
         
         s3_objects = s3_client.list_objects_v2(**list_params)
 
+        print("여기까지는 OK")
+
         for obj in s3_objects.get("Contents", []):
             file_key = obj["Key"]
             if file_key.endswith("/"):  # 폴더는 스킵
