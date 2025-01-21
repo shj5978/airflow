@@ -5,9 +5,9 @@ from botocore.exceptions import NoCredentialsError
 s3_client = boto3.client(
     's3',
     endpoint_url="https://s3.amazonaws.com",  # https:// 포함
-    aws_access_key_id='',
-    aws_secret_access_key='',
-    config=boto3.session.Config(signature_version='s3v4'),  # s3v4 서명 방식 사용
+    aws_access_key_id="",
+    aws_secret_access_key="",
+    config=boto3.session.Config(signature_version=UNSIGNED),  # s3v4 서명 방식 사용
 )
 print("client 생성 완료")
 
