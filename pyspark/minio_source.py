@@ -48,25 +48,20 @@ try:
             "Bucket": aws_s3_bucket_name,
             "Prefix": aws_s3_folder,
         }
-
-        print("여기까지는 OK(1)")
         
         if continuation_token:
             list_params["ContinuationToken"] = continuation_token
-
-        print("여기까지는 OK(2)")
         
         s3_objects = s3_client.list_objects_v2(**list_params)
 
-        print("여기까지는 OK(3)")
+        print(s3_objects)
 
         for obj in s3_objects.get("Contents", []):
             file_key = obj["Key"]
-            print("여기까지는 OK(4)")
             if file_key.endswith("/"):  # 폴더는 스킵
                 continue
             
-            print("여기까지는 OK(5)")
+            print(file_key)
 
             # 파일 패턴 매칭 (ASN0000509*.csv.gz) 필터링
             if fnmatch.fnmatch(file_key, "csv.gz/by_station/ASN0000509*.csv.gz"):
