@@ -9,7 +9,7 @@ from botocore.exceptions import NoCredentialsError
 # AWS S3 및 MinIO 설정
 aws_s3_bucket_name = "noaa-ghcn-pds"  # AWS S3 버킷 이름
 aws_s3_folder = "csv.gz/by_station/"  # AWS S3 폴더 경로 (접두어만 지정)
-local_target_folder = "/opt/airflow/minio/vm-workplace/uploaded_data" # 로컬 저장 경로 ( 컨테이너 내 MinIO 의 Bucket 마운트 경로로 설정 )
+local_target_folder = "/opt/airflow/pyspark_data/boto3_source" # 로컬 저장 경로
 
 # AWS S3 클라이언트 설정 (액세스 키와 비밀 키 없이 접근)
 s3_client = boto3.client(
