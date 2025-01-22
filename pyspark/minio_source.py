@@ -10,7 +10,7 @@ from botocore.exceptions import NoCredentialsError
 aws_s3_bucket_name = "noaa-ghcn-pds"  # AWS S3 버킷 이름
 aws_s3_folder = "csv.gz/by_station/"  # AWS S3 폴더 경로 (접두어만 지정)
 
-minio_endpoint = "https://localhost:9000"  # MinIO 서버 URL
+minio_endpoint = "172.19.0.2:9000"  # MinIO 서버 URL
 minio_access_key = "oMGrfbg5iz0zgt1iMT5w"  # MinIO 액세스 키
 minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"  # MinIO 비밀 키
 minio_bucket_name = "vm-workplace"  # MinIO 버킷 이름
@@ -31,7 +31,7 @@ minio_client = Minio(
     minio_endpoint,
     access_key=minio_access_key,
     secret_key=minio_secret_key,
-    secure=True  # HTTPS 사용 여부
+    secure=False  # HTTPS 사용 여부
 )
 print("MinIO 클라이언트 설정 완료.")
 
