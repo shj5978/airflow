@@ -25,22 +25,21 @@ try:
     for root, _, files in os.walk(source_folder):
         for file_name in files:
             local_file_path = os.path.join(root, file_name)
-            minio_target_path = os.path.relpath(local_file_path, source_folder)
+            minio_target_path = os.path.relpath(local_file_path, source_folder).replace("\\", "/")
 
-            if not os.path.exists(source_folder):
-                raise FileNotFoundError(f"Source folder '{source_folder}' does not exist.")
-
-            # MinIO로 파일 업로드
-            # with open(local_file_path, "rb") as file_data:
-            #     file_stat = os.stat(local_file_path)
-            #     minio_client.put_object(
-            #         bucket_name=minio_bucket_name,
-            #         object_name=minio_target_path,
-            #         data=file_data,
-            #         length=file_stat.st_size,
-            #     )
-            #     print(f"Uploaded {local_file_path} to MinIO at {minio_target_path}")
+            try:
+                # fput_object로 파일 업로드
+                minio_client.fput_object(
+                    bucket_name=minio_bucket_name,
+                    object_name=minio_target_path,
+                    file_path=local_file_path
+                )
+                print(f"Uploaded {local_file_path} to MinIO at {minio_target_path}")
+            except Exception as e:
+                print(f"Failed to upload {local_file_path}: {e}")
     ############################# MIN IO 에 업로드 ################################################
+
+    print("처리 완료!!!!!!")
 
 except Exception as e:
     print(f"오류 발생: {e}")
