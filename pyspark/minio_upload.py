@@ -3,8 +3,10 @@ from minio import Minio
 
 ############################# MIN IO 설정 ################################################
 minio_endpoint = "http://172.19.0.2:9000"  # MinIO 서버 URL
-minio_access_key = "oMGrfbg5iz0zgt1iMT5w"  # MinIO 액세스 키
-minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"  # MinIO 비밀 키
+#minio_access_key = "oMGrfbg5iz0zgt1iMT5w"  # MinIO 액세스 키
+#minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"  # MinIO 비밀 키
+minio_access_key = "minioadm"  # MinIO 액세스 키
+minio_secret_key = "minioadm"  # MinIO 비밀 키
 minio_bucket_name = "vm-workplace"  # MinIO 버킷 이름
 source_folder = "/opt/airflow/pyspark_data/noaa_source" # 업로드할 파일들이 있는 로컬 폴더 경로
 ############################# MIN IO 설정 ################################################
