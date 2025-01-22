@@ -64,17 +64,19 @@ try:
                 # S3 객체 URL 생성
                 s3_object_url = f"https://{aws_s3_bucket_name}.s3.amazonaws.com/{file_key}"
 
-                #print(file_key)
+                print(file_key)
+                print(s3_client.get_object(Bucket=aws_s3_bucket_name, Key=file_key)["Body"])
+                print(obj["Size"])
 
                 # MinIO로 업로드 (스트리밍 전송)
                 minio_target_path = f"{minio_target_folder}{file_key.split('/')[-1]}"
                 print(minio_target_path)
-                # minio_client.put_object(
-                #     bucket_name=minio_bucket_name,
-                #     object_name=minio_target_path,
-                #     data=s3_client.get_object(Bucket=aws_s3_bucket_name, Key=file_key)["Body"],
-                #     length=obj["Size"]
-                # )
+                minio_client.put_object(
+                    bucket_name=minio_bucket_name,
+                    object_name=minio_target_path,
+                    data=s3_client.get_object(Bucket=aws_s3_bucket_name, Key=file_key)["Body"],
+                    length=obj["Size"]
+                )
                 print(f"Uploaded {file_key} to MinIO at {minio_target_path}")
 
         # 페이지네이션: 다음 페이지가 있으면 토큰 갱신
