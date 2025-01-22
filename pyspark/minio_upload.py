@@ -2,7 +2,7 @@ import os
 from minio import Minio
 
 ############################# MIN IO 설정 ################################################
-minio_endpoint = "http://172.19.0.2:9000"  # MinIO 서버 URL
+minio_endpoint = "172.19.0.2:9000"  # MinIO 서버 URL
 minio_access_key = "oMGrfbg5iz0zgt1iMT5w"  # MinIO 액세스 키
 minio_secret_key = "GQBVemsvQVSnypFw6qQaWj5eCBPjapVMux972Fpg"  # MinIO 비밀 키
 minio_bucket_name = "vm-workplace"  # MinIO 버킷 이름
@@ -21,7 +21,7 @@ print("MinIO 클라이언트 설정 완료.")
 ############################# MIN IO 설정 ################################################
 
 try:
-    
+
     # Bucket 존재 여부 확인
     if minio_client.bucket_exists(minio_bucket_name):
         print(f"Bucket '{minio_bucket_name}' exists.")
