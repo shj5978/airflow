@@ -68,8 +68,6 @@ try:
                 print(s3_client.get_object(Bucket=aws_s3_bucket_name, Key=file_key)["Body"])
                 print(obj["Size"])
 
-                break
-
                 # MinIO로 업로드 (스트리밍 전송)
                 minio_target_path = f"{minio_target_folder}{file_key.split('/')[-1]}"
                 print(minio_target_path)
@@ -80,6 +78,8 @@ try:
                     length=obj["Size"]
                 )
                 print(f"Uploaded {file_key} to MinIO at {minio_target_path}")
+
+                break
 
         # 페이지네이션: 다음 페이지가 있으면 토큰 갱신
         #continuation_token = s3_objects.get("NextContinuationToken")
