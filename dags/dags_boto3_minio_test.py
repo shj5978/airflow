@@ -8,19 +8,20 @@ with DAG(dag_id="dags_boto3_minio_test",
          catchup=False,
          schedule_interval=None) as dag:
 
-    make_source = BashOperator(
-        task_id="make_source_task",
-        bash_command="python3 /opt/airflow/pyspark/boto3_source.py",
-    )
-
-    upload_minio_source = BashOperator(
-        task_id="upload_minio_source_task",
-        bash_command="python3 /opt/airflow/pyspark/minio_upload.py",
-    )
-
-    # upload_boto3_source = BashOperator(
-    #     task_id="upload_boto3_source_task",
-    #     bash_command="python3 /opt/airflow/pyspark/boto3_upload.py",
+    # make_source = BashOperator(
+    #     task_id="make_source_task",
+    #     bash_command="python3 /opt/airflow/pyspark/boto3_source.py",
     # )
 
-    make_source >> upload_minio_source
+    # upload_minio_source = BashOperator(
+    #     task_id="upload_minio_source_task",
+    #     bash_command="python3 /opt/airflow/pyspark/minio_upload.py",
+    # )
+
+    upload_boto3_source = BashOperator(
+        task_id="upload_boto3_source_task",
+        bash_command="python3 /opt/airflow/pyspark/boto3_upload.py",
+    )
+
+    # make_source >> upload_minio_source
+    upload_boto3_source
