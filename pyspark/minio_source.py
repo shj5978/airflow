@@ -10,7 +10,7 @@ from botocore.exceptions import NoCredentialsError
 # AWS S3 및 MinIO 설정
 aws_s3_bucket_name = "noaa-ghcn-pds"  # AWS S3 버킷 이름
 aws_s3_folder = "csv.gz/by_station/"  # AWS S3 폴더 경로 (접두어만 지정)
-local_target_folder = "/home/minio/storage/minio/vm-workplace/uploaded_data" # 로컬 저장 경로 ( MinIO 의 Bucket 경로로 설정 )
+local_target_folder = "/opt/airflow/minio/vm-workplace/uploaded_data" # 로컬 저장 경로 ( 컨테이너 내 MinIO 의 Bucket 마운트 경로로 설정 )
 
 ############################# MIN IO 설정 ################################################
 # minio_endpoint = "172.19.0.2:9000"  # MinIO 서버 URL
@@ -72,7 +72,7 @@ try:
                     local_file.write(s3_object['Body'].read())
 
                 print(f"Downloaded {file_key} to {local_file_path}")
-                
+
                 ############################# MIN IO 설정 ################################################
                 # # MinIO로 업로드 (스트리밍 전송)
                 # minio_target_path = f"{minio_target_folder}{file_key.split('/')[-1]}"
