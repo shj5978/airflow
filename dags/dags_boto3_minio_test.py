@@ -18,4 +18,6 @@ with DAG(dag_id="dags_boto3_minio_test",
         bash_command="python3 /opt/airflow/pyspark/minio_upload.py",
     )
 
-    make_source >> upload_source
+    # make_source >> upload_source
+
+    upload_source

@@ -31,15 +31,15 @@ try:
             print(minio_target_path)
 
             # MinIO로 파일 업로드
-            with open(local_file_path, "rb") as file_data:
-                file_stat = os.stat(local_file_path)
-                minio_client.put_object(
-                    bucket_name=minio_bucket_name,
-                    object_name=minio_target_path,
-                    data=file_data,
-                    length=file_stat.st_size,
-                )
-                print(f"Uploaded {local_file_path} to MinIO at {minio_target_path}")
+            # with open(local_file_path, "rb") as file_data:
+            #     file_stat = os.stat(local_file_path)
+            #     minio_client.put_object(
+            #         bucket_name=minio_bucket_name,
+            #         object_name=minio_target_path,
+            #         data=file_data,
+            #         length=file_stat.st_size,
+            #     )
+            #     print(f"Uploaded {local_file_path} to MinIO at {minio_target_path}")
     ############################# MIN IO 에 업로드 ################################################
 
 except Exception as e:
